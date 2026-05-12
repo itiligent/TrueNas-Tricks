@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Safely patch TrueNAS without breaking open the filesystem to apply the spindown patch
-# This script automatically creates a persistent overlay-based patch for select TrueNAS SCALE middleware files. 
-# It copies the original files to a user-defined overlay directory, applies spindown.patch to the overlay copies, and then uses 
-# bind mounts so TrueNAS runs the patched versions without directly cracking open the underlying read-only system files.
-# The script will also provide the correct commands to add it post init scripts to mount the overaly on boot.
+# Safely patch TrueNAS SCALE to prevent background processes from waking disks every 90 minutes,
+# without modifying the read-only system filesystem.
+#
+# This script creates a persistent overlay for selected TrueNAS SCALE middleware files.
+# It copies the original files into a user-defined overlay directory, applies spindown.patch
+# to the overlay copies, and then bind mounts the patched files over the originals.
+#
+# This allows TrueNAS to run the patched middleware files while leaving the underlying
+# read-only system files untouched.
+#
+# The script can also generate the required TrueNAS Init/Shutdown commands so the overlay
+# bind mounts are automatically restored after boot.
 
 # Instructions
 #
