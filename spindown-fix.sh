@@ -13,7 +13,7 @@ set -euo pipefail
 # This allows TrueNAS to run the patched middleware files while leaving the underlying
 # read-only system files untouched.
 #
-# The script can also generate the required TrueNAS Init/Shutdown commands so the overlay
+# The script can also generate the required TrueNAS PREINIT commands so the overlay
 # bind mounts are automatically restored after boot.
 
 # Instructions
@@ -43,12 +43,12 @@ set -euo pipefail
 # 8. Check the current overlay path and bind-mount status:
 #      bash spindown-fix.sh status
 #
-# 10. To make the bind mounts persistent after reboot, genernate the necessesay post init commands 
+# 10. To make the bind mounts persistent after reboot, genernate the necessesay PREINIT commands 
 # add these under System | Advanced Init/Shutdown scripts
 # bash spindown-fix.sh init-commmands
 
 # Before updating TrueNAS, to avoid potential issues you should set everything back to standard 
-#   a. Disabling the init scripts and unmount the overaly
+#   a. Disabling the PREINIT scripts and unmount the overaly
 #   b. bash spindown-fix.sh unmount | or reboot
 #   After a TrueNAS update, re-run copy and dry-run before applying the patch again.
 #
@@ -95,7 +95,7 @@ show_help() {
   echo "  status         Show whether overlay files exist and whether each file"
   echo "                 is currently bind-mounted."
   echo
-  echo "  init-commands  Print TrueNAS Post Init commands for persistent bind mounts."
+  echo "  init-commands  Print TrueNAS PREINIT commands for persistent bind mounts."
   echo
   echo "Typical workflow:"
   echo "  sudo bash $0 copy"
@@ -259,10 +259,10 @@ show_status() {
 
 print_init_commands() {
   echo
-  echo "Add these commands to TruNAS GUI Post Init Scripts."
+  echo "Add these commands to TruNAS GUI PREINIT Scripts."
   echo
   echo "Type: Command"
-  echo "When: Post Init"
+  echo "When: PREINIT"
   echo "Enabled: Yes"
   echo
   echo "Commands:"
@@ -349,7 +349,7 @@ case "$MODE" in
     echo "Patch applied, overlay files bind-mounted, and middlewared restarted."
     echo
     echo "Next step:"
-    echo "Run this to create the post init overlay startup commands for the TrueNAS GUI:"
+    echo "Run this to create the PREINIT overlay startup commands for the TrueNAS GUI:"
     echo "  sudo bash \"$SCRIPT_PATH\" init-commands"
     ;;
 
