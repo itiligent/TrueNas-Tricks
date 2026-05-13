@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Safely patch TrueNAS SCALE to prevent background processes from waking disks every 90 minutes,
-# without modifying the read-only system filesystem.
+# Ceated to address issues explained in https://forums.truenas.com/t/hdd-sleep-spindown-standby/13325/141
+
+# Safely patch TrueNAS SCALE to prevent background processes from waking disks every 90 minutes or so,
+# but without breaking security and forciing the modifying of read-only system files.
 #
 # This script creates a persistent overlay for selected TrueNAS SCALE middleware files.
 # It copies the original files into a user-defined overlay directory, applies spindown.patch
@@ -36,6 +38,7 @@ set -euo pipefail
 #      bash spindown-fix.sh dry-run   # if all is good, continue to next step
 #
 # 7. Now we can apply the patch to the new overlay file copies. This will also automatically create and mount the new overlay bind mounts
+#      bash spindown-fix.sh apply
 #
 # 8. Check the current overlay path and bind-mount status:
 #      bash spindown-fix.sh status
@@ -53,7 +56,7 @@ set -euo pipefail
 # - Run copy before dry-run or apply.
 # - Run dry-run before apply to confirm the patch matches the current files.
 # - The original read-only TrueNAS system files are not modified.
-# - The patched versions live under the configured OVERLAY path.
+# - The patched versions are kept under the configured OVERLAY path.
 
 MODE="${1:-}"
 
