@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
 
-# Ceated to address issues explained in https://forums.truenas.com/t/hdd-sleep-spindown-standby/13325/141
-
-# Safely patch TrueNAS SCALE to prevent background processes from waking disks every 90 minutes or so,
-# but without breaking security and forcing the modification of read-only system files.
+# This script addresses a "feature" where HDDs are constanly woken from standby for various system default checks every 90 mins or so.
 #
-# This script creates a persistent overlay for selected TrueNAS SCALE middleware files.
-# It copies the original files into a user-defined overlay directory, applies spindown.patch
-# to the overlay copies, and then bind mounts the patched files over the originals.
+# This script creates a persistent overlay for selected TrueNas SCALE middleware files.
+# It copies the original files into a user-defined overlay directory, applies the spindown.patch
+# to the new overlay copies, and then bind mounts these patched files over the originals.
 #
-# This allows TrueNAS to run the patched middleware files while leaving the underlying
+# This scipt allows TrueNas to run the patched middleware files whilst leaving the underlying orignal 
 # read-only system files untouched.
 #
-# The script can also generate the required TrueNAS PREINIT commands so the overlay
+# The script can also generate the required TrueNaS PREINIT commands so the overlay
 # bind mounts are automatically restored after boot.
 
 # Instructions
@@ -27,11 +25,11 @@ set -euo pipefail
 # 3. Confirm the patch file exists at the configurable patch location below:
     PATCH="/home/truenas_admin/spindown.patch" # Download patch at https://forums.truenas.com/uploads/short-url/lz8ZYr42jE7608gFx5TVQG2reex.txt
 #     
-# 4. Choose a TrueNAS location/dataset where tyou want to create your overlay, keep this off spinning disks
+# 4. Choose a TrueNas location/dataset where tyou want to create your overlay, keep this off spinning disks
     OVERLAY="/mnt/tank/overlay"
 
 ### Now we can run the script! ###
-# 5. To create the new overlay copies of the selected TrueNAS middleware files:
+# 5. To create the new overlay copies of the selected TrueNas middleware files:
 #      bash spindown-fix.sh copy
 #
 # 6. Next test whether the patch will apply cleanly and there are no issues:
@@ -43,19 +41,19 @@ set -euo pipefail
 # 8. Check the current overlay path and bind-mount status:
 #      bash spindown-fix.sh status
 #
-# 10. To make the bind mounts persistent after reboot, genernate the necessesay PREINIT commands 
+# 9. To make the bind mounts persistent after reboot, genernate the necessesay PREINIT commands 
 # add these under System | Advanced Init/Shutdown scripts
 # bash spindown-fix.sh init-commmands
 
-# Before updating TrueNAS, to avoid potential issues you should set everything back to standard 
+# Before updating TrueNas, to avoid potential issues you should set everything back to standard 
 #   a. Disabling the PREINIT scripts and unmount the overaly
 #   b. bash spindown-fix.sh unmount | or reboot
-#   After a TrueNAS update, re-run copy and dry-run before applying the patch again.
+#   After a TrueNas update, re-run copy and dry-run before applying the patch again.
 #
 # Script workflow:#
 # - Run copy before dry-run or apply.
 # - Run dry-run before apply to confirm the patch matches the current files.
-# - The original read-only TrueNAS system files are not modified.
+# - The original read-only TrueNas system files are not modified.
 # - The patched versions are kept under the configured OVERLAY path.
 
 MODE="${1:-}"
@@ -95,7 +93,7 @@ show_help() {
   echo "  status         Show whether overlay files exist and whether each file"
   echo "                 is currently bind-mounted."
   echo
-  echo "  init-commands  Print TrueNAS PREINIT commands for persistent bind mounts."
+  echo "  init-commands  Print TrueNas PREINIT commands for persistent bind mounts."
   echo
   echo "Typical workflow:"
   echo "  sudo bash $0 copy"
@@ -349,7 +347,7 @@ case "$MODE" in
     echo "Patch applied, overlay files bind-mounted, and middlewared restarted."
     echo
     echo "Next step:"
-    echo "Run this to create the PREINIT overlay startup commands for the TrueNAS GUI:"
+    echo "Run this to create the PREINIT overlay startup commands for the TrueNas GUI:"
     echo "  sudo bash \"$SCRIPT_PATH\" init-commands"
     ;;
 
