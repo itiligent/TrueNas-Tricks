@@ -11,7 +11,7 @@ set -euo pipefail
 # This scipt allows TrueNas to run the patched middleware files whilst leaving the underlying orignal 
 # read-only system files untouched.
 #
-# The script can also generate the required TrueNaS PREINIT commands so the overlay
+# The script can also generate the required TrueNaS PREINIT commands so as the overlay
 # bind mounts are automatically restored after boot.
 
 # Instructions
@@ -42,7 +42,7 @@ set -euo pipefail
 #      bash spindown-fix.sh status
 #
 # 9. To make the bind mounts persistent after reboot, genernate the necessesay PREINIT commands 
-# add these under System | Advanced Init/Shutdown scripts
+# and add these under System | Advanced Init/Shutdown scripts
 # bash spindown-fix.sh init-commmands
 
 # Before updating TrueNas, to avoid potential issues you should set everything back to standard 
