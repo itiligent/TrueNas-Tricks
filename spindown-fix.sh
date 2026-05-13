@@ -4,7 +4,7 @@ set -euo pipefail
 # Ceated to address issues explained in https://forums.truenas.com/t/hdd-sleep-spindown-standby/13325/141
 
 # Safely patch TrueNAS SCALE to prevent background processes from waking disks every 90 minutes or so,
-# but without breaking security and forciing the modifying of read-only system files.
+# but without breaking security and forcing the modification of read-only system files.
 #
 # This script creates a persistent overlay for selected TrueNAS SCALE middleware files.
 # It copies the original files into a user-defined overlay directory, applies spindown.patch
