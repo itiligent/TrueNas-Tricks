@@ -43,7 +43,7 @@ set -euo pipefail
 #
 # 9. To make the bind mounts persistent after reboot, genernate the necessesay PREINIT commands 
 # and add these under System | Advanced Init/Shutdown scripts
-# bash spindown-fix.sh init-commmands
+# bash spindown-fix.sh init-commands
 
 # Before updating TrueNas, to avoid potential issues you should set everything back to standard 
 #   a. Disabling the PREINIT scripts and unmount the overaly
