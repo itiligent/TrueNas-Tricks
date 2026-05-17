@@ -38,7 +38,7 @@ By analysing repeated wake events over time, the script builds a much higher-con
 
 Built-in profiles allow different levels of capture detail, from lower-noise monitoring through to deep debug tracing for difficult wake-cause investigations.
 
-📘 Full documentation: [hdd-wake-trace documentation](https://github.com/itiligent/TrueNas-Tricks/blob/main/hdd-wake-trace-documentation.md)
+📘 Full documentation: [hdd-wake-trace documentation](https://github.com/itiligent/TrueNAS-Tricks/blob/main/hdd-wake-trace-documentation.md)
 
 ---
 
@@ -46,4 +46,13 @@ Built-in profiles allow different levels of capture detail, from lower-noise mon
 
 TrueNAS middleware can be limited when sending large email reports. `smart-report.py` works around this by creating comprehensive disk health reports from `smartctl` output and sending them via Python using the TrueNAS API.
 
-The included companion script, `smart-report-api-key-setup.sh`, helps install a GUI-generated TrueNAS API key into:
+The included companion script, `smart-report-api-key-setup.sh`, helps install a GUI-generated TrueNAS API key that the python script will call.
+
+
+## 💾 External USB Mount Helper
+
+`external-usb.sh` is an interactive Bash utility for safely mounting and unmounting external USB storage devices on TrueNAS.
+
+The script automatically detects connected USB partitions, presents them in a device selection menu, and mounts the chosen device to a fixed mountpoint (`/mnt/external`) with shared read/write access enabled.  The script also sets compatible permissions and ownership settings for data on the external USB mountpoint to allow for easy compatibiltiy between TrueNAS and any other Linux host. 
+
+
