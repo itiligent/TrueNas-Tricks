@@ -1,20 +1,16 @@
 ## 💤 TrueNAS Spindown Patch Helper
 
-️`spindown-fix.sh` provides a safe, reversible way to apply the TrueNAS HDD spindown patch **without directly modifying the read-only system filesystem**.
+️`spindown-fix.sh` provides a safe, reversible way to apply the TrueNAS HDD spindown patch **without directly modifying the read-only TrueNAS filesystem**.
 
-Instead of changing TrueNAS system files in place, the script:
-
-- Copies selected TrueNAS middleware files into a writable overlay directory
-- Applies `spindown.patch` to the overlay copies
-- Bind-mounts the patched files over the original system paths
-- Leaves the original TrueNAS system files untouched
-
-This method lets TrueNAS run the patched middleware while keeping the underlying OS clean. It also makes the patch easier to test, roll back, reapply after updates, or remove cleanly.
+- Automatically copies selected TrueNAS middleware files into a new writable overlay
+- Applies `spindown.patch.fixed` to the overlay file copies
+- Bind-mounts the patched overaly files over the original files (leaving original TrueNAS system files untouched)
+- Upgrade friendly - This script can be run multiple times to roll back and reapply after updates.
 
 ⚠️ **Important note:**  
-The original `spindown.patch` shared on the TrueNAS Community Forum contains a smartctl race/command-order issue. It formats the device path before the `-n standby` option, meaning smartctl may touch the disk before the standby check is honoured.
+The original [spindown.patch](https://forums.truenas.com/uploads/short-url/lz8ZYr42jE7608gFx5TVQG2reex.txt) from the TrueNAS Community Forum formats the device path before the `-n standby` option, creating a potential race condition where smartctl may touch the disk before a standby check is honoured.
 
-`spindown.patch.fixed` corrects this by always passing `-n standby` before the device path, allowing standby checks to complete without inadvertently waking disks.
+`spindown.patch.fixed` resolves this by passing `-n standby` before the device path, allowing standby checks to complete without inadvertently waking disks.
 
 ---
 
@@ -49,7 +45,7 @@ TrueNAS middleware can be limited when sending large email reports. `smart-repor
 The included companion script, `smart-report-api-key-setup.sh`, helps install a GUI-generated TrueNAS API key that the python script will call.
 
 
-## 💾 External USB Mount Helper
+## 💾 TrueNAS External USB Mount Helper
 
 `external-usb.sh` is an interactive Bash utility for safely mounting and unmounting external USB storage devices on TrueNAS.
 
